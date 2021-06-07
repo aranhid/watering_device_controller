@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.aranhid.wateringdeivcecontroller.ui.home.HomeFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,6 +42,22 @@ public class GoogleAuth {
 
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
         mAuth = FirebaseAuth.getInstance();
+    }
+
+    public Boolean checkLogIn() {
+        GoogleSignInAccount googleAccount = getLastSignedInAccount();
+        FirebaseUser firebaseUser = getCurrentFirebaseUser();
+
+        if (googleAccount == null && firebaseUser == null) {
+            openSignInActivity();
+            return false;
+        }
+        return true;
+    }
+
+    private void openSignInActivity(){
+        Intent intent = new Intent(context, SignIn.class);
+        context.startActivity(intent);
     }
 
     public Intent getSignInIntent() {
